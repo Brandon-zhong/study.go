@@ -1,16 +1,34 @@
 package main
 
+import "fmt"
+
 var a = "G"
 
 func main() {
-	n()
-	m()
-	n()
+	v := new(Voodoo)
+	v.Magic()
+	v.MoreMagic()
+
+}
+type Base struct{}
+
+func (Base) Magic() {
+	fmt.Println("base magic")
 }
 
-func n() { print(a) }
+func (self Base) MoreMagic() {
+	self.Magic()
+	self.Magic()
+}
 
-func m() {
-	a := "O"
-	print(a)
+type Voodoo struct {
+	Base
+}
+
+func (Voodoo) Magic() {
+	fmt.Println("voodoo magic")
+}
+
+type hahah interface {
+
 }

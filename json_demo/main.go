@@ -13,6 +13,7 @@ import (
 func main() {
 
 	testJson()
+	testDecoder()
 
 }
 

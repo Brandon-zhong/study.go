@@ -3,7 +3,7 @@ package main
 import "sort"
 
 func main() {
-	var l = []User{User{id:1, name: "fkasd"}, User{id: 2, name: "dfasd"}};
+	var l = []User{User{id:1, name: "fkasd"}, User{id: 2, name: "dfasd"}}
 	sort.Sort(list(l))
 
 }

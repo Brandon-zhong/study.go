@@ -3,37 +3,23 @@ package main
 import "fmt"
 
 func main() {
-
-	var arr [3]int = [3]int{}
-	for i := range arr {
-		arr[i] = i + 5
+	var c int = 3
+	var array customArray = make(customArray, c)
+	for i := 0; i < c; i++ {
+		array[i] = 3 + i
 	}
-	fmt.Println(arr)
-	var slice []int = arr[:]
-	fmt.Println(slice)
-	ints := appendInt(slice, 999)
-
-	fmt.Println(ints)
-
-	fmt.Println(cap(slice), " --- ", cap(ints))
+	fmt.Printf("addr --> %p\n", array)
+	fmt.Printf("addr --> %p\n", &array)
+	fmt.Println(array)
+	array.update(2, 10)
+	array.update(0, 20)
 
 }
 
-func appendInt(x []int, y int) []int {
+type customArray []int
 
-	var z []int
-	zlen := len(x) + 1
-	if zlen <= cap(x) {
-		z = x[:zlen]
-	} else {
-		//容量不够，创建新的数组
-		zcap := zlen
-		if zcap < 2*len(x) {
-			zcap = 2 * len(x)
-		}
-		z = make([]int, zlen, zcap)
-		copy(z, x)
-	}
-	z[len(x)] = y
-	return z
+func (c customArray) update(index, value int) {
+	c[index] = value
+	fmt.Printf("addr --> %p\n", c)
+	fmt.Printf("addr --> %p\n", &c)
 }

@@ -2,13 +2,29 @@ package main
 
 import (
 	"fmt"
+	"reflect"
 	"sort"
 )
 
 func main() {
-	var l = []User{User{id: 1, name: "fkasd"}, User{id: 2, name: "dfasd"}}
-	sort.Sort(list(l))
-	testEmptyInterface()
+
+	fmt.Println(allSame([]int{1, 2, 3, 4}))
+	fmt.Println(allSame([]int{1, 1, 1, 1}))
+	//fmt.Println(allSame(make(map[string]string), []int{2, 3, 4, 5, 6}))\
+	r := make([]int, 2)
+	r = append(r, 10)
+
+}
+
+func allSame(params ...interface{}) bool {
+	arr := reflect.ValueOf(params[0])
+	value := arr.Index(0).Interface()
+	for i := 1; i < arr.Len(); i++ {
+		if arr.Index(i).Interface() != value {
+			return false
+		}
+	}
+	return true
 }
 
 func testSort() {

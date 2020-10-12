@@ -10,4 +10,5 @@ require (
 	gorm.io/gorm v1.20.0
 	github.com/spf13/viper v1.6.2
 	github.com/mitchellh/mapstructure v1.2.2 // indirect
+	github.com/google/wire v0.4.0
 )

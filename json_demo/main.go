@@ -13,7 +13,7 @@ import (
 func main() {
 
 	testJson()
-	testDecoder()
+	//testDecoder()
 
 }
 
@@ -46,7 +46,7 @@ func testJson() {
 
 type Movie struct {
 	Title  string
-	Year   int  `json:"released"`
+	Year   int  `json:"released1"`
 	Color  bool `json:"color,omitempty"`
 	Actors []string
 }

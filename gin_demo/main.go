@@ -1,18 +1,28 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"study.go/gin_demo/middleware"
 )
 
 func main() {
+
+}
+
+
+func Routers() *gin.Engine {
+
 	engine := gin.Default()
-	engine.GET("/get", func(context *gin.Context) {
-		fmt.Println("")
-		context.JSON(http.StatusOK, "jfaklsjflskjdf")
-	})
-	_ = engine.Run()
+
+	//跨域处理
+	engine.Use(middleware.Cors)
+
+	group := engine.Group("")
+
+	group.Group()
+
+
+	return nil
 }
 
 

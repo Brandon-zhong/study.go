@@ -15,8 +15,9 @@ func init() {
 	if err := v.ReadInConfig(); err != nil {
 		fmt.Println("read config file error, file path: ", configFile)
 	}
-	_ = v.Unmarshal(&Config)
-	fmt.Println(Config)
+	if err := v.Unmarshal(&Config); err != nil {
+		fmt.Println("unmarshal config error")
+	}
 }
 
 type ServerConfig struct {

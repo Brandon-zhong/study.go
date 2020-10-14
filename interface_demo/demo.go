@@ -2,33 +2,39 @@ package main
 
 import "fmt"
 
-var a = "G"
-
 func main() {
-	v := new(Voodoo)
-	v.Magic()
-	v.MoreMagic()
+
+	var d = Demo{name: "asdf"}
+	var ha = Haha{Demo: d}
+	var ha1 = Haha{Demo: d}
+	fmt.Println(ha.name, " --- ", ha1.name)
+	ha.name = "zhong"
+	d.name = "123456"
+	ha1.h()
+	fmt.Println(ha.name, " --- ", ha1.name)
+
+	var d2 = Demo{name: "qwopir"}
+	var he = Heihei{Demo: &d2}
+	var he2 = Heihei{Demo: &d2}
+	fmt.Println(he.name," -- ", he2.name)
+	he.name = "sheng"
+	he2.h()
+	fmt.Println(he.name," -- ", he2.name)
 
 }
-type Base struct{}
 
-func (Base) Magic() {
-	fmt.Println("base magic")
+type Demo struct {
+	name string
 }
 
-func (self Base) MoreMagic() {
-	self.Magic()
-	self.Magic()
+func (d *Demo) h() {
+	d.name = d.name + "1"
 }
 
-type Voodoo struct {
-	Base
+type Haha struct {
+	Demo
 }
 
-func (Voodoo) Magic() {
-	fmt.Println("voodoo magic")
-}
-
-type hahah interface {
-
+type Heihei struct {
+	*Demo
 }

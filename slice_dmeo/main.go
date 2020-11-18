@@ -1,10 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+	"os"
+	"strings"
+)
 
 func main() {
 
-	arrayA := [2]int{100, 200}
+	/*arrayA := [2]int{100, 200}
 	var arrayB [2]int
 
 	arrayB = arrayA
@@ -14,8 +19,10 @@ func main() {
 	fmt.Printf("arrayB : %p , %v\n", &arrayB, arrayB)
 
 	sli := arrayA[:]
-	fmt.Printf("sli: %p, %p\n", sli, &sli)
+	fmt.Printf("sli: %p, %p\n", sli, &sli)*/
 
+
+	testSeeker()
 
 }
 
@@ -53,4 +60,13 @@ func update(array customArray, index, value int) {
 	array[index] = value
 	fmt.Printf("addr --> %p\n", array)
 	fmt.Printf("addr --> %p\n", &array)
+}
+
+
+func testSeeker() {
+	os.Open()
+	reader := strings.NewReader("this is first go application")
+	reader.Seek(-6, io.SeekEnd)
+	readRune, _, _ := reader.ReadRune()
+	fmt.Printf("%c\n", readRune)
 }

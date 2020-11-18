@@ -11,4 +11,5 @@ require (
 	github.com/spf13/viper v1.6.2
 	github.com/mitchellh/mapstructure v1.2.2 // indirect
 	github.com/google/wire v0.4.0
+	github.com/go-redis/redis/v7 v7.4.0
 )

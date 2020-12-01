@@ -16,4 +16,5 @@ require (
 	gorm.io/gorm v1.20.0
 	github.com/go-redis/redis/v7 v7.4.0
 	github.com/tsenart/vegeta/v12 v12.8.4
+	github.com/satori/go.uuid v1.2.0
 )

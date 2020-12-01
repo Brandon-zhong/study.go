@@ -12,8 +12,28 @@ import (
 
 func main() {
 
-	testJson()
-	//testDecoder()
+	var jsonStr = `{
+		"id":123,
+		"name":"iyingdi",
+		"friends":[
+			{
+				"id":234,
+				"name":"lskdfj",
+				"age":20
+			}
+		]
+	}`
+	var m map[string]interface{}
+	err := json.Unmarshal([]byte(jsonStr), &m)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	tmp := m["friends"].([]interface{})
+	for _, t := range tmp {
+		fmt.Println(t)
+		fmt.Println(t.(map[string]interface{})["name"])
+	}
 
 }
 

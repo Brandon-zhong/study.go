@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"os"
 	"strings"
 )
 
@@ -21,8 +20,9 @@ func main() {
 	sli := arrayA[:]
 	fmt.Printf("sli: %p, %p\n", sli, &sli)*/
 
+	//testSeeker()
+	//fmt.Println(os.Getpagesize())
 
-	testSeeker()
 
 }
 
@@ -64,7 +64,6 @@ func update(array customArray, index, value int) {
 
 
 func testSeeker() {
-	os.Open()
 	reader := strings.NewReader("this is first go application")
 	reader.Seek(-6, io.SeekEnd)
 	readRune, _, _ := reader.ReadRune()

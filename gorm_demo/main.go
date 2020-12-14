@@ -17,11 +17,14 @@ func main() {
 	fmt.Println(config.Config.Mysql)
 	dsn := "root:abc123@tcp(192.168.131.125:3306)/iplaymtg?charset=utf8mb4&parseTime=True&loc=Local"
 	db, _ := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	var u user
+	/*var u user
 	db.Raw("select id, username, head, fire from user where id = ?", 1453295).Scan(&u)
 	fmt.Println(u)
 	var demo = Demo{Name: "falkj"}
-	db.Create(&demo)
+	db.Create(&demo)*/
+	total := 0
+	res := db.Raw("select count(1) from user").Scan(&total)
+	fmt.Println("total -->", total, ",err --> ", res.Error)
 
 }
 

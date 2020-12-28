@@ -1,0 +1,9 @@
+{{ define "index/index"}}
+    {{ template "header" . }}
+    <body>
+    <div>
+        hello, name --> {{ .Name }}, age --> {{ .Age }}
+    </div>
+    </body>
+    {{ template "footer" . }}
+{{end}}

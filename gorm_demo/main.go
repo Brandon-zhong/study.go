@@ -22,9 +22,15 @@ func main() {
 	fmt.Println(u)
 	var demo = Demo{Name: "falkj"}
 	db.Create(&demo)*/
-	total := 0
+	/*total := 0
 	res := db.Raw("select count(1) from user").Scan(&total)
-	fmt.Println("total -->", total, ",err --> ", res.Error)
+	fmt.Println("total -->", total, ",err --> ", res.Error)*/
+	var u user
+	var u1 user
+	db.Find(&u1)
+	//db.Exec("select * from user where username = ?", "唐青枫本人").Find(&u)
+	fmt.Println(u)
+	fmt.Println(u1)
 
 }
 
@@ -33,6 +39,9 @@ type user struct {
 	Username string
 	Head     string
 	Fire     uint
+}
+func (u *user) TableName () string {
+	return "user"
 }
 
 type Demo struct {

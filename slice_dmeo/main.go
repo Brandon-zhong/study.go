@@ -8,22 +8,17 @@ import (
 
 func main() {
 
-	/*arrayA := [2]int{100, 200}
-	var arrayB [2]int
+	s := make([]int, 0)
+	oldCap := cap(s)
+	for i := 0; i < 2048 * 2 * 2 * 2 * 2 * 2; i++ {
+		s = append(s, i)
+		newCap := cap(s)
+		if newCap != oldCap {
+			fmt.Printf("[%d -> %d] cap = %d | after append %d cap = %d  difference = %d  rate=%-2.4f\n", 0, i-1, oldCap, i, newCap, newCap-oldCap, float64(newCap)/float64(oldCap))
+			oldCap = newCap
+		}
 
-	arrayB = arrayA
-
-	fmt.Printf("arrayA : %p , %v\n", &arrayA, arrayA)
-	testArray(arrayA)
-	fmt.Printf("arrayB : %p , %v\n", &arrayB, arrayB)
-
-	sli := arrayA[:]
-	fmt.Printf("sli: %p, %p\n", sli, &sli)*/
-
-	//testSeeker()
-	//fmt.Println(os.Getpagesize())
-
-
+	}
 }
 
 func testArray(x [2]int) {

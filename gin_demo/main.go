@@ -17,7 +17,6 @@ func main() {
 }
 
 func Routers() *gin.Engine {
-	
 	dir, err := os.Getwd()
 	if err != nil {
 		fmt.Println("get current path err")

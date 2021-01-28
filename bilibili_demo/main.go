@@ -3,7 +3,6 @@ package main
 import (
 	"crypto/md5"
 	"fmt"
-	"github.com/panjf2000/ants/v2"
 	"github.com/tidwall/gjson"
 	"io"
 	"io/ioutil"
@@ -14,10 +13,9 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 )
-
-var pool, _ = ants.NewPool(100)
 
 func main() {
 	/*videoInfo := VideoInfo{
@@ -41,7 +39,7 @@ func main() {
 	getPlayUrl(&videoInfo)
 	downloadVideo(&videoInfo)*/
 
-	startDownload("BV1X7411b7Yc")
+	startDownload("BV1BE411D7ii")
 }
 
 type VideoInfo struct {
@@ -107,41 +105,45 @@ func startDownload(videoId string) {
 	aid := data.Get("aid").Int()
 	filder = filepath.Join(filder, data.Get("title").String())
 	array := data.Get("pages").Array()
-	//开始下载，生成16个协程的协程池
-	pool, _ := ants.NewPool(32)
-	videoSize := len(array)
-	videoInfoChan := make(chan VideoInfo)
-	go func() {
-		for i := range array {
-			j := i
-			_ = pool.Submit(func() {
-				//封装下载信息
-				videoInfo := VideoInfo{
-					aid:      aid,
-					cid:      array[j].Get("cid").Int(),
-					title:    array[j].Get("part").String(),
-					page:     int(array[j].Get("page").Int()),
-					baseUrl:  baseUrl,
-					quality:  quality,
-					filePath: filder,
-				}
-				getPlayUrl(&videoInfo)
-				fmt.Println("get play url --> " + videoInfo.title)
-				videoInfoChan <- videoInfo
-			})
+	var videoInfoList []VideoInfo
+	for i := range array {
+		//封装下载信息
+		videoInfo := VideoInfo{
+			aid:      aid,
+			cid:      array[i].Get("cid").Int(),
+			title:    array[i].Get("part").String(),
+			page:     int(array[i].Get("page").Int()),
+			baseUrl:  baseUrl,
+			quality:  quality,
+			filePath: filder,
 		}
-	}()
-
-	var waitGroup sync.WaitGroup
-	waitGroup.Add(videoSize)
-	for i := 0; i < videoSize; i++ {
-		_ = pool.Submit(func() {
-			defer waitGroup.Done()
-			videoInfo := <-videoInfoChan
-			downloadVideo(&videoInfo)
-		})
+		videoInfoList = append(videoInfoList, videoInfo)
 	}
-	waitGroup.Wait()
+
+	size := len(array)
+	//开始下载，使用指定容量的管道来控制同时下载的数量
+	videoInfoChan := make(chan bool, 16)
+	//用于等待所有携程执行完成
+	var wait sync.WaitGroup
+	wait.Add(size)
+	var count int64 = -1
+	for i := 0; i < size; i++ {
+		go func() {
+			//获取一个值
+			videoInfo := videoInfoList[atomic.AddInt64(&count, 1)]
+			//通过管道申请开始下载，
+			videoInfoChan <- true
+			defer func() {
+				//处理完成后空出管道的位置，通知其他等待的携程开始处理
+				<-videoInfoChan
+				wait.Done()
+			}()
+			//fmt.Println(strconv.Itoa(int(newSize)) + " -- " + videoInfo.title)
+			//time.Sleep(time.Second * 3)
+			downloadVideoWithRetry(&videoInfo, 3)
+		}()
+	}
+	wait.Wait()
 	log.Printf("all video has finished, spend time --> %s.", resolveTime(int(time.Now().Unix()-startTime)))
 
 }
@@ -160,7 +162,7 @@ func resolveTime(spendTime int) string {
 }
 
 //获取是的播放地址
-func getPlayUrl(videoInfo *VideoInfo) {
+func getPlayUrl(videoInfo *VideoInfo) (flag bool) {
 	//获取appKey和secret
 	key, sec := GetAppKey(entropy)
 	//生成参数和校验和
@@ -176,21 +178,33 @@ func getPlayUrl(videoInfo *VideoInfo) {
 	resp, err := http.DefaultClient.Do(request)
 	if err != nil {
 		log.Fatalf("get play url error, err --> %s,  status code --> %d", err, resp.StatusCode)
-		return
+		return false
 	}
 	all, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalf("read respond fail, error --> %s", err)
-		return
+		return false
 	}
 	var videoList []string
 	for _, i := range gjson.GetBytes(all, "durl").Array() {
 		videoList = append(videoList, i.Get("url").String())
 	}
 	videoInfo.urlList = videoList
+	return true
 }
 
-func downloadVideo(videoInfo *VideoInfo) {
+func downloadVideoWithRetry(videoInfo *VideoInfo, retry int) {
+	var flag = false
+	for i := 0; i < retry && !flag; i++ {
+		flag = downloadVideo(videoInfo)
+	}
+}
+
+func downloadVideo(videoInfo *VideoInfo) (flag bool) {
+
+	//获取下载链接
+	flag = getPlayUrl(videoInfo)
+
 	urlSize := len(videoInfo.urlList)
 	//当视频和多视频下载
 	if urlSize == 0 {
@@ -209,9 +223,9 @@ func downloadVideo(videoInfo *VideoInfo) {
 		resp, err := http.DefaultClient.Do(request)
 		if err != nil {
 			log.Printf("get play url error, err --> %s", err)
+			flag = false
 			continue
 		}
-		fmt.Println("文件大小：" + strconv.FormatInt(resp.ContentLength, 10))
 		//生成完整的文件目录
 		fileName := videoInfo.title
 		if urlSize != 1 {
@@ -219,19 +233,22 @@ func downloadVideo(videoInfo *VideoInfo) {
 		}
 		filePath := filepath.Join(videoInfo.filePath, fileName+".mp4")
 		_ = os.MkdirAll(videoInfo.filePath, 0777)
+		_ = os.Remove(filePath)
 		file, err := os.Create(filePath)
 		if err != nil {
 			log.Printf("open file error, err --> %s", err)
+			flag = false
 			continue
 		}
-		log.Println(fileName + " is downloading.")
+		log.Println(fileName + " is downloading.   file size --> " + strconv.FormatInt(resp.ContentLength, 10))
 		if _, err = io.Copy(file, resp.Body); err != nil {
 			log.Printf("download video error, err --> %s", err)
+			flag = false
 			continue
 		}
 		log.Println(fileName + " has finished.")
 		resp.Body.Close()
 		_ = file.Close()
 	}
-
+	return
 }

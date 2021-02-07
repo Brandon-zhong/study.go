@@ -77,6 +77,7 @@ func downloadVideoList(videoInfoList []VideoInfo, getPlayUrl func(videoInfo *Vid
 	}
 	wait.Wait()
 	log.Printf("all video has finished, spend time --> %s.", resolveTime(int(time.Now().Unix()-startTime)))
+	time.Sleep(2 * time.Second)
 }
 
 func downloadVideoWithRetry(videoInfo *VideoInfo, retry int, getPlayUrl func(videoInfo *VideoInfo) (flag bool)) {

@@ -1,6 +1,7 @@
 package bilibili
 
 import (
+	"bufio"
 	"fmt"
 	"github.com/tidwall/gjson"
 	"io/ioutil"
@@ -9,10 +10,11 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
-const SESSDATA = "ba234a5b%2C1620707829%2Ccd50d*b1"
+var SESSDATA string
 
 func getPlayListForFanJu(video *VideoInfo) (flag bool) {
 	urlApi := fmt.Sprintf("https://api.bilibili.com/x/player/playurl?cid=%d&avid=%d&qn=%d", video.cid, video.aid, video.quality)
@@ -42,9 +44,9 @@ func getPlayListForFanJu(video *VideoInfo) (flag bool) {
 	return true
 }
 
-func StartDownloadFanJu(url, folder string) {
+func StartDownloadFanJu(url, folder string, quality int) {
 
-	quality := 112
+	//quality := 112
 	folder = getDownloadDirIfFolderIsNil(folder)
 
 	request, _ := http.NewRequest("GET", url, nil)
@@ -65,6 +67,7 @@ func StartDownloadFanJu(url, folder string) {
 	find := compile.Find(bytes)
 	j := string(find)
 	data := gjson.Parse(j[len("INITIAL_STATE__=") : len(j)-1])
+	//fmt.Println(data)
 	fanjuTitle := data.Get("mediaInfo.title").String()
 	folder = filepath.Join(folder, fanjuTitle)
 
@@ -82,5 +85,24 @@ func StartDownloadFanJu(url, folder string) {
 			filePath: folder,
 		})
 	}
+	fmt.Printf("开始下载，要下载的 %s 一共有 %d 集视频\n", fanjuTitle, len(videoList))
 	downloadVideoList(videoList, getPlayListForFanJu)
+}
+
+func InputFanJuParam(input *bufio.Scanner) {
+	fmt.Print("番剧下载需要用户的SESSDATA，请从你的网页cookie中找出SESSDATA值填入（如果确定要下载的视频不需要大会员可以不填）：\n> ")
+	input.Scan()
+	SESSDATA = input.Text()
+	fmt.Print("请输入要下载番剧的链接，例如（https://www.bilibili.com/bangumi/play/ep90830）：\n> ")
+	input.Scan()
+	url := input.Text()
+	fmt.Println("请输入你要下载视频的清晰度（1080p+:112;1080p:80;720p60:74;720p:64;480p:32;360p:16）:")
+	fmt.Print("请输入112或80或74或64或32或16：\n> ")
+	input.Scan()
+	quality, err := strconv.Atoi(input.Text())
+	if err != nil {
+		fmt.Println("清晰度输入错误，请输入有效的清晰度数字！")
+		return
+	}
+	StartDownloadFanJu(url, "", quality)
 }

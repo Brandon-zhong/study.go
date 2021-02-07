@@ -1,6 +1,7 @@
 package bilibili
 
 import (
+	"bufio"
 	"crypto/md5"
 	"fmt"
 	"github.com/tidwall/gjson"
@@ -60,11 +61,11 @@ func getVideoPlayUrl(videoInfo *VideoInfo) (flag bool) {
 	return true
 }
 
-func StartDownloadVideo(videoId, folder string) {
+func StartDownloadVideo(videoId, folder string, quality int) {
 
 	//folder := "E:\\nfs\\download"
 	folder = getDownloadDirIfFolderIsNil(folder)
-	quality := 80
+	//quality := 80
 
 	params := "aid=" + videoId
 	if strings.HasPrefix(videoId, "BV") {
@@ -83,7 +84,8 @@ func StartDownloadVideo(videoId, folder string) {
 	all, _ := ioutil.ReadAll(resp.Body)
 	data := gjson.GetBytes(all, "data")
 	aid := data.Get("aid").Int()
-	folder = filepath.Join(folder, data.Get("title").String())
+	title := data.Get("title").String()
+	folder = filepath.Join(folder, title)
 	array := data.Get("pages").Array()
 	var videoInfoList []VideoInfo
 	for i := range array {
@@ -99,6 +101,21 @@ func StartDownloadVideo(videoId, folder string) {
 		}
 		videoInfoList = append(videoInfoList, videoInfo)
 	}
-
+	fmt.Printf("开始下载，要下载的 %s 一共有 %d 集视频\n", title, len(videoInfoList))
 	downloadVideoList(videoInfoList, getVideoPlayUrl)
+}
+
+func InputVideoParam(input *bufio.Scanner) {
+	fmt.Print("请输入要下载B站视频的bv号或者av号，例如（BV1b7411N798/av46958874）：\n> ")
+	input.Scan()
+	id := input.Text()
+	fmt.Print("请输入要下载视频的清晰度（1080p:80;720p60:74;720p:64;480p:32;360p:16;）：\n> ")
+	input.Scan()
+	qualityStr := input.Text()
+	quality, err := strconv.Atoi(qualityStr)
+	if err != nil {
+		fmt.Println("清晰度输入错误，请输入有效的清晰度数字！")
+		return
+	}
+	StartDownloadVideo(id, "", quality)
 }

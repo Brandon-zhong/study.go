@@ -9,8 +9,6 @@ import (
 
 func main() {
 
-	//terminalDownload()
-
 	bilibili.SESSDATA = "2d68f213%2C1626184663%2C485c1*11"
 	bilibili.StartDownloadFanJu("https://www.bilibili.com/bangumi/play/ep90830", "E:\\nfs\\download", 112)
 

@@ -24,8 +24,6 @@ type VideoInfo struct {
 	urlList  []string //视频的url地址
 }
 
-
-
 func downloadVideoList(videoInfoList []VideoInfo, getPlayUrl func(videoInfo *VideoInfo) (flag bool)) {
 
 	startTime := time.Now().Unix()
@@ -53,7 +51,7 @@ func downloadVideoList(videoInfoList []VideoInfo, getPlayUrl func(videoInfo *Vid
 		}()
 	}
 	wait.Wait()
-	log.Printf("all video has finished, spend time --> %s.", util.ResolveTime(int(time.Now().Unix()-startTime)))
+	log.Printf("all video has finished, spend time --> %s.", util.ResolveTime(time.Now().Unix()-startTime))
 	time.Sleep(2 * time.Second)
 }
 

@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"study.go/util"
 )
 
 func GetAppKey(entropy string) (appkey, sec string) {
@@ -64,7 +65,7 @@ func getVideoPlayUrl(videoInfo *VideoInfo) (flag bool) {
 func StartDownloadVideo(videoId, folder string, quality int) {
 
 	//folder := "E:\\nfs\\download"
-	folder = getDownloadDirIfFolderIsNil(folder)
+	folder = util.GetDownloadDirIfFolderIsNil(folder)
 	//quality := 80
 
 	params := "aid=" + videoId

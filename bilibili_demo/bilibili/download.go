@@ -1,13 +1,13 @@
 package bilibili
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
+	"study.go/util"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -24,30 +24,7 @@ type VideoInfo struct {
 	urlList  []string //视频的url地址
 }
 
-func resolveTime(spendTime int) string {
-	second := spendTime % 60
-	minute := spendTime / 60
-	if minute == 0 {
-		return fmt.Sprintf("%ds", second)
-	}
-	if minute < 60 {
-		return fmt.Sprintf("%dm%ds", minute, second)
-	}
-	hour := minute / 60
-	return fmt.Sprintf("%dh%dm%ds", hour, minute, second)
-}
 
-func getDownloadDirIfFolderIsNil(folder string) string {
-	if folder == "" {
-		dir, err := os.Getwd()
-		if err != nil {
-			log.Println(err)
-			return ""
-		}
-		folder = filepath.Join(dir, "download")
-	}
-	return folder
-}
 
 func downloadVideoList(videoInfoList []VideoInfo, getPlayUrl func(videoInfo *VideoInfo) (flag bool)) {
 
@@ -76,7 +53,7 @@ func downloadVideoList(videoInfoList []VideoInfo, getPlayUrl func(videoInfo *Vid
 		}()
 	}
 	wait.Wait()
-	log.Printf("all video has finished, spend time --> %s.", resolveTime(int(time.Now().Unix()-startTime)))
+	log.Printf("all video has finished, spend time --> %s.", util.ResolveTime(int(time.Now().Unix()-startTime)))
 	time.Sleep(2 * time.Second)
 }
 

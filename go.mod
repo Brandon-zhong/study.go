@@ -25,5 +25,5 @@ require (
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gorm.io/driver/mysql v1.0.1
 	gorm.io/gorm v1.20.0
-
+    github.com/PuerkitoBio/goquery v1.6.1
 )

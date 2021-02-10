@@ -1,4 +1,4 @@
-package must
+package util
 
 import (
 	"io"
@@ -12,51 +12,51 @@ func Must(err error) {
 }
 
 // String returns the string or panic.
-func String(s string, err error) string {
+func MustString(s string, err error) string {
 	Must(err)
 	return s
 }
 
 // Int returns the integer or panic.
-func Int(a int, err error) int {
+func MustInt(a int, err error) int {
 	Must(err)
 	return a
 }
 
 // Bool returns the bool or panic.
-func Bool(a bool, err error) bool {
+func MustBool(a bool, err error) bool {
 	Must(err)
 	return a
 }
 
 // Float64 returns the float64 or panic.
-func Float64(a float64, err error) float64 {
+func MustFloat64(a float64, err error) float64 {
 	Must(err)
 	return a
 }
 
 // Byte returns the byte array or panic.
-func Byte(a []byte, err error) []byte {
+func MustByte(a []byte, err error) []byte {
 	Must(err)
 	return a
 }
 
 // NotEmpty checks string not empty.
-func NotEmpty(s string) {
+func MustNotEmpty(s string) {
 	if s == "" {
 		panic("given string is empty")
 	}
 }
 
 // True checks b is true.
-func True(b bool) {
+func MustTrue(b bool) {
 	if !b {
 		panic("assertion not true")
 	}
 }
 
 // Write checks for a io.Write result.
-func Write(n int, err error) {
+func MustWrite(n int, err error) {
 	if err != nil {
 		panic(err)
 	}
@@ -64,7 +64,6 @@ func Write(n int, err error) {
 
 // Close closes the file and panic on error.
 // Useful in defer statement.
-func Close(c io.Closer) {
+func MustClose(c io.Closer) {
 	Must(c.Close())
 }
-

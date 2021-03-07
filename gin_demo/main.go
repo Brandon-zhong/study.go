@@ -24,6 +24,7 @@ func Routers() *gin.Engine {
 	}
 	dir += "/gin_demo"
 	router := gin.Default()
+	router.LoadHTMLGlob(dir + "/templates/*.html")
 	router.LoadHTMLGlob(dir + "/templates/*/*.html")
 	router.GET("/posts/index", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "index/index", gin.H{
@@ -31,7 +32,7 @@ func Routers() *gin.Engine {
 		})
 	})
 	router.GET("/users/index", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "news/index", gin.H{
+		ctx.HTML(http.StatusOK, "news/index.html", gin.H{
 			"title": "users",
 		})
 	})

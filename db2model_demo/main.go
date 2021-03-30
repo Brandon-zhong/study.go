@@ -16,11 +16,14 @@ import (
 
 //生成的时候单独设置下即可
 const (
-	dbUser         = "platform"
+	dbUser         = "root"
+	dbPass         = "abc123"
+	dbHost         = "192.168.131.189"
+/*	dbUser         = "platform"
 	dbPass         = "rHpqmGIxAK9IkBGO"
 	dbHost         = "10.70.1.252"
-	dbPort         = 3306
-	jsonAnnotation = false
+*/	dbPort         = 3306
+	jsonAnnotation = true
 	gromAnnotation = true
 	gureguTypes    = true
 	// path           = "/Users/wuyang/code/goLang/src/gitlab.gaeamobile-inc.net/technology_platform_go/ydapi/pkg/models/dao"
@@ -28,7 +31,7 @@ const (
 )
 
 func main() {
-	db2Model("bbs_tag_link_0", "dao", "yingdi")
+	db2Model("user", "dao", "iplaymtg")
 }
 
 func db2Model(tableName, pkgName, dataBase string) {

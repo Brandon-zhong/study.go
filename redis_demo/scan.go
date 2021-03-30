@@ -38,26 +38,22 @@ func main() {
 }
 
 func scan() {
+	fmt.Println("start match --> ", match)
 	cursor := uint64(0)
-	match := "demo_key*"
-	count := 0
-	scanNum := 0
-
 again:
-	scanNum += 1
 	result, cursor, err := rs.Scan(cursor, match, 1000).Result()
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
-	count += len(result)
+	//fmt.Println(len(result),"--", cursor)
+	for _, str := range result {
+		fmt.Println(str)
+	}
 	if cursor != 0 {
 		time.Sleep(100 * time.Millisecond)
-		if scanNum%50 == 0 {
-			fmt.Println(fmt.Sprintf("match --> %s , count --> %d", match, count))
-		}
 		goto again
 	}
-	fmt.Println(fmt.Sprintf("match --> %s , count --> %d , scanNum --> %d", match, count, scanNum))
 }
 
 func insertDemoData() {

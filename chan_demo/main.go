@@ -7,6 +7,20 @@ import (
 )
 
 func main() {
+
+	num := 10
+	var ch = make(chan int)
+	/*for i := 0; i < num; i++ {
+		ch <- i
+	}*/
+	close(ch)
+	for i := 0; i < num+5; i++ {
+		fmt.Println(<-ch)
+	}
+
+}
+
+func demo1() {
 	channel := make(chan int, 10)
 	var wg sync.WaitGroup
 	wg.Add(1)

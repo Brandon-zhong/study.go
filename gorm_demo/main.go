@@ -1,22 +1,52 @@
 package main
 
 import (
-	_ "github.com/go-sql-driver/mysql"
+	"database/sql/driver"
+	"encoding/json"
+	"fmt"
+	"study.go/gorm_demo/global"
 )
 
-func main() {
-	/*var mysqlConfig = config.Config.Mysql
-	var ptr = &mysqlConfig.Username
-	*ptr = "hahaha"
-	fmt.Printf("Mysql addr --> %p\n", &(config.Config.Mysql.Username))
-	fmt.Printf("mysqlConfig addr --> %p\n", &(mysqlConfig.Username))
-	fmt.Println(config.Config.Mysql)
-	dsn := "root:abc123@tcp(192.168.131.125:3306)/iplaymtg?charset=utf8mb4&parseTime=True&loc=Local"
-	db, _ := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	db.Create()*/
-
+/*type User struct {
+	ID       int              `gorm:"column:id;primary_key" json:"id"` //
+	Username string           `gorm:"column:username" json:"username"` //
+	Openid   string           `gorm:"column:openid" json:"openid"`     //
+	Head     string           `gorm:"column:head" json:"head"`         //
+	Email    string           `gorm:"column:email" json:"email"`       //
+	Fire     int              `gorm:"column:fire" json:"fire"`         //
+	Account  *simplejson.JSON `gorm:"account" json:"account"`
 }
 
-type user struct {
+func (u *User) TableName() string {
+	return "user"
+}*/
+
+/*type JSON struct {
+	Data interface{}
+}
+
+// Value returns json value, implement driver.Valuer interface.
+func (j JSON) Value() (driver.Value, error) {
+	return json.Marshal(j.Data)
+}
+*/
+type M map[string]interface{}
+
+type Li []M
+
+func (l Li) Value() (driver.Value, error) {
+	return json.Marshal(l)
+}
+
+func main() {
+
+	var ml Li
+	ml = append(ml, M{
+		"name": "zhong",
+		"age":  1,
+	})
+
+	err := global.DB.Exec("update user set account = ? where id = ?", ml, 1).Error
+	fmt.Println(err)
 
 }

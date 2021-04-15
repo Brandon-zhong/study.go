@@ -1,30 +1,18 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"regexp"
 	"strconv"
-	"study.go/util"
 )
+
 
 func main() {
 
-	type A struct {
-		Name string `json:"name"`
-	}
+	//sl1 := []int{1, 2, 3, 4, 5, 6}
 
-	type B struct {
-		*A
-		Age int `json:"age"`
-	}
-
-	var d = B{Age: 12, A: &A{Name: "zhong"}}
-	bytes := util.MustByte(json.Marshal(d))
-
-	fmt.Println(string(bytes))
-	var a A
-	json.Unmarshal(bytes, &a)
-	fmt.Println(a)
+	phoneRegex, _ := regexp.Compile(`^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$`)
+	fmt.Println(phoneRegex.MatchString("18296874638"))
 
 }
 

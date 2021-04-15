@@ -4,10 +4,10 @@ go 1.15
 
 require (
 	github.com/PuerkitoBio/goquery v1.6.1
+	github.com/armon/consul-api v0.0.0-20180202201655-eb2c6b5be1b6 // indirect
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-redis/redis/v7 v7.4.0
 	github.com/go-sql-driver/mysql v1.5.0
-	github.com/golang/protobuf v1.4.2
 	github.com/google/gopacket v1.1.18
 	github.com/google/wire v0.4.0
 	github.com/mitchellh/mapstructure v1.2.2 // indirect
@@ -15,10 +15,12 @@ require (
 	github.com/olivere/elastic/v7 v7.0.22
 	github.com/otiai10/gosseract/v2 v2.2.4
 	github.com/satori/go.uuid v1.2.0
-	github.com/spf13/viper v1.6.2
+	github.com/spf13/cobra v1.1.3
+	github.com/spf13/viper v1.7.0
 	github.com/tidwall/gjson v1.1.4
 	github.com/tidwall/match v1.0.3 // indirect
 	github.com/tsenart/vegeta/v12 v12.8.4
+	github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77 // indirect
 	gitlab.gaeamobile-inc.net/sp2/gaeaspgo v1.2.0
 	golang.org/x/mobile v0.0.0-20201217150744-e6ae53a27f4f
 	golang.org/x/net v0.0.0-20200520004742-59133d7f0dd7

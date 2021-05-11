@@ -85,28 +85,19 @@ func getList2(url string) {
 		url string
 		path string
 	}
-	chanSize := 8
-	//用于等待所有携程执行完成
-	var wait sync.WaitGroup
-	infoChannel := make(chan info, chanSize)
-	for i := 0; i < chanSize; i++ {
-		go func() {
-			wait.Add(1)
-			defer wait.Done()
-			for f := range infoChannel {
-				downloadNovel(f.url, f.path)
-			}
-		}()
-	}
+	proc := util.NewConcurrentProc(8, func(i interface{}) {
+		f := i.(info)
+		downloadNovel(f.url, f.path)
+	}).Start()
 	document.Find("div#list dl dd a").Each(func(i int, selection *goquery.Selection) {
 		val, _ := selection.Attr("href")
 		text := selection.Text()
 		fmt.Println("start downloading", text)
 		//fmt.Println(i, val, text, num, compile.ReplaceAllString(num, ""))
-		infoChannel <- info{url: url + val, path: filepath.Join(tmpDir, val[:len(val)-5])}
+		proc.AddInfo(info{url: url + val, path: filepath.Join(tmpDir, val[:len(val)-5])})
 	})
-	close(infoChannel)
-	wait.Wait()
+	proc.Done()
+	proc.Wait()
 	mergeFile(tmpDir, filepath.Join("E:\\nfs\\download", title+".txt"))
 	log.Printf("\nall download has finished, spend time --> %s.", util.ResolveTime(time.Now().Unix()-start))
 }

@@ -87,7 +87,7 @@ func StartDownloadFanJu(url, folder string, quality int) {
 		})
 	}
 	fmt.Printf("开始下载，要下载的 %s 一共有 %d 集视频\n", fanjuTitle, len(videoList))
-	downloadVideoList(videoList, getPlayListForFanJu)
+	downloadVideoList1(videoList, getPlayListForFanJu)
 }
 
 func InputFanJuParam(input *bufio.Scanner) {

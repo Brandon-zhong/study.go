@@ -2,18 +2,26 @@ package main
 
 import (
 	"fmt"
-	"regexp"
 	"strconv"
+	"sync"
 )
-
 
 func main() {
 
-	//sl1 := []int{1, 2, 3, 4, 5, 6}
+	var wait sync.WaitGroup
 
-	phoneRegex, _ := regexp.Compile(`^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$`)
-	fmt.Println(phoneRegex.MatchString("18296874638"))
+}
+func do(l *sync.Mutex) {
+}
 
+func getAccountIdFromUserIdAndIndex(userId, index int) int {
+	return userId | (index << 27 & 0xffffffff)
+}
+func getUserIdAndIndexFromAccountId(accountId int) (userId, index int) {
+	accountId = accountId & 0xffffffff
+	index = accountId >> 27
+	userId = accountId & 0x7ffffff
+	return
 }
 
 func iterateWithDel() {

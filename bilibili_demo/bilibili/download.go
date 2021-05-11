@@ -24,6 +24,32 @@ type VideoInfo struct {
 	urlList  []string //视频的url地址
 }
 
+func downloadVideoList1(videoInfoList []VideoInfo, getPlayUrl func(videoInfo *VideoInfo) (flag bool)) {
+
+	startTime := time.Now().Unix()
+	var wait sync.WaitGroup
+	//限制启动的协程数量
+	goruntineSize := 16
+	infoChan := make(chan *VideoInfo)
+	for i := 0; i < goruntineSize; i++ {
+		go func() {
+			wait.Add(1)
+			for infoChan := range infoChan {
+				downloadVideoWithRetry(infoChan, 3, getPlayUrl)
+			}
+			defer wait.Done()
+		}()
+	}
+
+	for i := range videoInfoList {
+		infoChan <- &videoInfoList[i]
+	}
+	close(infoChan)
+	wait.Wait()
+	log.Printf("all video has finished, spend time --> %s.", util.ResolveTime(time.Now().Unix()-startTime))
+	time.Sleep(2 * time.Second)
+}
+
 func downloadVideoList(videoInfoList []VideoInfo, getPlayUrl func(videoInfo *VideoInfo) (flag bool)) {
 
 	startTime := time.Now().Unix()

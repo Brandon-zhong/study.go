@@ -64,6 +64,53 @@ func getList(url string) {
 	log.Printf("\nall download has finished, spend time --> %s.", util.ResolveTime(time.Now().Unix()-start))
 }
 
+func getList2(url string) {
+	start := time.Now().Unix()
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer resp.Body.Close()
+	reader := simplifiedchinese.GBK.NewDecoder().Reader(resp.Body)
+	document, _ := goquery.NewDocumentFromReader(reader)
+
+	//下载到一个临时目录中，每章一个文件，完成后再进行合并
+	tmpDir := util.GetDownloadDirIfFolderIsNil("E:\\nfs\\download\\tmp")
+	_ = os.MkdirAll(tmpDir, 0777)
+
+	title := document.Find("div#info h1").Text()
+
+	type info struct {
+		url string
+		path string
+	}
+	chanSize := 8
+	//用于等待所有携程执行完成
+	var wait sync.WaitGroup
+	infoChannel := make(chan info, chanSize)
+	for i := 0; i < chanSize; i++ {
+		go func() {
+			wait.Add(1)
+			defer wait.Done()
+			for f := range infoChannel {
+				downloadNovel(f.url, f.path)
+			}
+		}()
+	}
+	document.Find("div#list dl dd a").Each(func(i int, selection *goquery.Selection) {
+		val, _ := selection.Attr("href")
+		text := selection.Text()
+		fmt.Println("start downloading", text)
+		//fmt.Println(i, val, text, num, compile.ReplaceAllString(num, ""))
+		infoChannel <- info{url: url + val, path: filepath.Join(tmpDir, val[:len(val)-5])}
+	})
+	close(infoChannel)
+	wait.Wait()
+	mergeFile(tmpDir, filepath.Join("E:\\nfs\\download", title+".txt"))
+	log.Printf("\nall download has finished, spend time --> %s.", util.ResolveTime(time.Now().Unix()-start))
+}
+
 func mergeFile(tmpDir, targetFilePath string) {
 	dir, err := os.Open(tmpDir)
 	if err != nil {
@@ -164,7 +211,7 @@ func getContent(url string) string {
 func main() {
 
 	//getContent()
-	getList("https://www.37zw.la/0/74/")
+	getList2("https://www.37zw.la/22/22055/")
 	//mergeFile("E:\\nfs\\download\\tmp", "E:\\nfs\\download\\修真聊天群.txt")
 
 }

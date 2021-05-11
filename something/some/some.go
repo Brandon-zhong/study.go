@@ -1,6 +1,8 @@
 package some
 
-import "strconv"
+import (
+	"strconv"
+)
 
 func GetSome() map[string]interface{} {
 	result := make(map[string]interface{})
@@ -19,3 +21,4 @@ func GetSome() map[string]interface{} {
 	result["list"] = list
 	return result
 }
+

@@ -12,5 +12,6 @@ func ResolveTime(spendTime int64) string {
 		return fmt.Sprintf("%dm%ds", minute, second)
 	}
 	hour := minute / 60
+	minute = minute % 60
 	return fmt.Sprintf("%dh%dm%ds", hour, minute, second)
 }

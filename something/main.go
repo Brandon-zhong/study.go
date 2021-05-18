@@ -2,13 +2,22 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"runtime/trace"
 	"strconv"
 	"sync"
+
+	"study.go/something/some"
 )
 
 func main() {
 
-	var wait sync.WaitGroup
+	f, _ := os.Create("trace.out")
+	defer f.Close()
+	trace.Start(f)
+	defer trace.Stop()
+
+	some.GcDemo()
 
 }
 func do(l *sync.Mutex) {
@@ -53,7 +62,7 @@ func iterateWithDel() {
 
 func ldkfj() {
 	score := int64(341)<<16 | (int64(274877906943 & 0xffff))
-	fmt.Println(score, strconv.FormatInt(score, 2))
+	fmt.Println(score)
 	fmt.Println(strconv.FormatInt(int64(274877906943&0xffffffff), 2))
 	fmt.Println(strconv.FormatInt(int64(341)<<32, 2))
 }

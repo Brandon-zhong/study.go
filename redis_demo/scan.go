@@ -31,11 +31,11 @@ func checkParams() {
 	}
 }
 
-func main() {
+// func main() {
 
-	scan()
+// 	scan()
 
-}
+// }
 
 func scan() {
 	fmt.Println("start match --> ", match)

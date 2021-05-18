@@ -1,9 +1,7 @@
 package main
 
 import (
-	"fmt"
 	"github.com/go-redis/redis/v7"
-	"strconv"
 )
 
 var RS *redis.Client
@@ -16,23 +14,23 @@ func init() {
 	RS = redis.NewClient(&options)
 }
 
-func main() {
+// func main() {
 
-	//RS.ZRangeByScore()
-	//addData()
-	key := "demo"
-	lastCommentId := 17
-	min := "(" + strconv.Itoa(lastCommentId)
-	if lastCommentId == 0 {
-		min = "+inf"
-	}
+// 	//RS.ZRangeByScore()
+// 	//addData()
+// 	key := "demo"
+// 	lastCommentId := 17
+// 	min := "(" + strconv.Itoa(lastCommentId)
+// 	if lastCommentId == 0 {
+// 		min = "+inf"
+// 	}
 
-	result, _ := RS.ZRevRangeByScore(key, &redis.ZRangeBy{Min: "-inf", Max: min, Offset: 0, Count: 4}).Result()
-	for _, s := range result {
-		fmt.Println(s)
-	}
+// 	result, _ := RS.ZRevRangeByScore(key, &redis.ZRangeBy{Min: "-inf", Max: min, Offset: 0, Count: 4}).Result()
+// 	for _, s := range result {
+// 		fmt.Println(s)
+// 	}
 
-}
+// }
 
 func addData() {
 	RS.Del("demo")

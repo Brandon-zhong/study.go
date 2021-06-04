@@ -2,7 +2,6 @@ package some
 
 import (
 	"strconv"
-	"sync"
 )
 
 func GetSome() map[string]interface{} {
@@ -21,8 +20,5 @@ func GetSome() map[string]interface{} {
 	}
 	result["list"] = list
 
-	sync.Map{}
-
 	return result
 }
-

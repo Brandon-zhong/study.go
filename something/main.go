@@ -3,15 +3,52 @@ package main
 import (
 	"fmt"
 	"strconv"
-	"sync"
 )
 
-func main() {
-
-	var wait sync.WaitGroup
-
+func OrderBySign(input []int) []int {
+	//
+	// 请您补充完整这个函数，实现题目要求。
+	//
+	first, zeroIndex := 0, 0
+	for i := 0; i < len(input); i++ {
+		if input[i] == 0 {
+			zeroIndex = i
+			continue
+		}
+		if input[i] > 0 {
+			if i != first {
+				input[first], input[i] = input[i], input[first]
+			}
+			first++
+		}
+	}
+	if first < len(input) && zeroIndex != 0 {
+		input[first], input[zeroIndex] = input[zeroIndex], input[first]
+	}
+	return input
 }
-func do(l *sync.Mutex) {
+
+// 请不要修改以下代码
+func main() {
+	input1 := []int{6, 4, -3, 5, -2, -1, 0, 1, -9}
+	input2 := []int{1, 2, 3}
+	input3 := []int{0, 0, 1, -1}
+	input4 := []int{1}
+	input5 := []int{-1, 0, 0, 1, -1}
+
+	fmt.Print("input1 result: ")
+	fmt.Println(OrderBySign(input1))
+	fmt.Print("input2 result: ")
+	fmt.Println(OrderBySign(input2))
+	fmt.Print("input3 result: ")
+	fmt.Println(OrderBySign(input3))
+	fmt.Print("input4 result: ")
+	fmt.Println(OrderBySign(input4))
+	fmt.Print("input5 result: ")
+	fmt.Println(OrderBySign(input5))
+}
+func demo(list []string) {
+	list[0] = "hahah"
 }
 
 func getAccountIdFromUserIdAndIndex(userId, index int) int {

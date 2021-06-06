@@ -1,14 +1,13 @@
 package main
 
-import "time"
+import (
+	"fmt"
+)
 
-func main() {}
-
-//超时控制，某些操作在指定的时间内完成，超时退出不再等待
-func timeoutControlDemo() {
-	select {
-	case <-time.After(time.Second * 3):
-		//case  _, _ := http.Get("www.google.com"):
-
-	}
+func main() {
+	fmt.Println(Ipv4ToUint32("192.168.132.169"))
+}
+// ipv4地址转成uint32数字
+func Ipv4ToUint32(ipv4 string) uint32 {
+	return 0
 }

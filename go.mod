@@ -7,6 +7,7 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-redis/redis/v7 v7.4.0
 	github.com/go-sql-driver/mysql v1.5.0
+	github.com/golang/groupcache v0.0.0-20190702054246-869f871628b6
 	github.com/google/gopacket v1.1.18
 	github.com/google/wire v0.4.0
 	github.com/mitchellh/go-homedir v1.1.0
@@ -17,10 +18,13 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/viper v1.7.0
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.173
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tms v0.0.0-20210602003728-41e03f14c6ed
 	github.com/tidwall/gjson v1.1.4
 	github.com/tidwall/match v1.0.3 // indirect
 	github.com/tsenart/vegeta/v12 v12.8.4
-	gitlab.gaeamobile-inc.net/sp2/gaeaspgo v1.2.0
+	gitlab.gaeamobile-inc.net/sp2/gaeaspgo v1.2.6
+	go.uber.org/zap v1.15.0
 	golang.org/x/mobile v0.0.0-20201217150744-e6ae53a27f4f
 	golang.org/x/net v0.0.0-20200520004742-59133d7f0dd7
 	golang.org/x/text v0.3.3
@@ -29,4 +33,5 @@ require (
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gorm.io/driver/mysql v1.0.1
 	gorm.io/gorm v1.20.0
+
 )

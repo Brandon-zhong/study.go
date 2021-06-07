@@ -14,8 +14,8 @@ import (
 func TestTencentCloud(t *testing.T) {
 
 	credential := common.NewCredential(
-		"AKID3Ik2TsWuiScaq4laWSkyhHoz8CcfDdV9",
-		"11dpixV4bBRAPxDViLzqx8ARvbUVDggu",
+		"",
+		"",
 	)
 	cpf := profile.NewClientProfile()
 	cpf.HttpProfile.Endpoint = "tms.tencentcloudapi.com"

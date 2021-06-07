@@ -12,6 +12,7 @@ require (
 	github.com/google/wire v0.4.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/mapstructure v1.2.2 // indirect
+	github.com/natefinch/lumberjack v2.0.0+incompatible // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/olivere/elastic/v7 v7.0.22
 	github.com/otiai10/gosseract/v2 v2.2.4
@@ -23,8 +24,13 @@ require (
 	github.com/tidwall/gjson v1.1.4
 	github.com/tidwall/match v1.0.3 // indirect
 	github.com/tsenart/vegeta/v12 v12.8.4
+<<<<<<< HEAD
 	gitlab.gaeamobile-inc.net/sp2/gaeaspgo v1.2.6
 	go.uber.org/zap v1.15.0
+=======
+	gitlab.gaeamobile-inc.net/sp2/gaeaspgo v1.2.0
+	go.uber.org/zap v1.17.0
+>>>>>>> 0612b95ab5ad04df994b1033f74bcbe9cbb7a8ed
 	golang.org/x/mobile v0.0.0-20201217150744-e6ae53a27f4f
 	golang.org/x/net v0.0.0-20200520004742-59133d7f0dd7
 	golang.org/x/text v0.3.3

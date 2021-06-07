@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/md5"
 	"fmt"
+<<<<<<< HEAD
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -94,48 +95,14 @@ func generateSign(params map[string]string, secretKey string) (string, string) {
 }
 
 func do(l *sync.Mutex) {
-}
+=======
+)
 
-func getAccountIdFromUserIdAndIndex(userId, index int) int {
-	return userId | (index << 27 & 0xffffffff)
+func main() {
+	fmt.Println(Ipv4ToUint32("192.168.132.169"))
+>>>>>>> 0612b95ab5ad04df994b1033f74bcbe9cbb7a8ed
 }
-func getUserIdAndIndexFromAccountId(accountId int) (userId, index int) {
-	accountId = accountId & 0xffffffff
-	index = accountId >> 27
-	userId = accountId & 0x7ffffff
-	return
-}
-
-func iterateWithDel() {
-	type d struct {
-		Name string `json:"name"`
-		Age  int    `json:"age"`
-	}
-	var list []d
-	for i := 0; i < 10; i++ {
-		list = append(list, d{
-			Name: "345",
-			Age:  i,
-		})
-	}
-	a := 5
-	delete := false
-	for i := 0; i < len(list); {
-		if list[i].Age == a {
-			if delete {
-				list = append(list[:i], list[i+1:]...)
-				continue
-			}
-			list[i].Name = "haha"
-		}
-		i++
-	}
-	fmt.Println(list)
-}
-
-func ldkfj() {
-	score := int64(341)<<16 | (int64(274877906943 & 0xffff))
-	fmt.Println(score)
-	fmt.Println(strconv.FormatInt(int64(274877906943&0xffffffff), 2))
-	fmt.Println(strconv.FormatInt(int64(341)<<32, 2))
+// ipv4地址转成uint32数字
+func Ipv4ToUint32(ipv4 string) uint32 {
+	return 0
 }

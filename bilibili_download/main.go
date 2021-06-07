@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"study.go/bilibili_demo/bilibili"
+	"study.go/bilibili_download/bilibili"
 )
 
 func main() {

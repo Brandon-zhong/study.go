@@ -19,6 +19,6 @@ func GetSome() map[string]interface{} {
 		})
 	}
 	result["list"] = list
+
 	return result
 }
-

@@ -102,6 +102,8 @@ func getList2(url string) {
 	log.Printf("\nall download has finished, spend time --> %s.", util.ResolveTime(time.Now().Unix()-start))
 }
 
+
+
 func mergeFile(tmpDir, targetFilePath string) {
 	dir, err := os.Open(tmpDir)
 	if err != nil {

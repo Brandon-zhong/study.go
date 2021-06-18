@@ -12,13 +12,12 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/mapstructure v1.2.2 // indirect
 	github.com/natefinch/lumberjack v2.0.0+incompatible
+	github.com/newtools/zsocket v0.0.0-20200707140709-19c55a5c9e33
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/olivere/elastic/v7 v7.0.22
 	github.com/otiai10/gosseract/v2 v2.2.4
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/viper v1.7.0
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.173
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tms v0.0.0-20210602003728-41e03f14c6ed
 	github.com/tidwall/gjson v1.1.4
 	github.com/tidwall/match v1.0.3 // indirect
 	github.com/tsenart/vegeta/v12 v12.8.4

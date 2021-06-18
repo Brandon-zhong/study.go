@@ -3,23 +3,16 @@ package main
 import (
 	"crypto/md5"
 	"fmt"
-<<<<<<< HEAD
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"sort"
-	"strconv"
 	"strings"
-	"sync"
+	"time"
 )
 
 func main() {
-	var sl []int
-	for i := 0; i < 2048; i++ {
-		sl = append(sl, i)
-		fmt.Println()
-	}
-	fmt.Println(sl)
+	fmt.Println(time.Now().Second(), time.Now().Unix())
 }
 
 func a() int {
@@ -79,7 +72,6 @@ func yingdiReq() {
 	fmt.Println(string(bytes))
 }
 
-
 func generateSign(params map[string]string, secretKey string) (string, string) {
 	var keyList []string
 	for key, _ := range params {
@@ -92,17 +84,4 @@ func generateSign(params map[string]string, secretKey string) (string, string) {
 		str += fmt.Sprintf("%s=%s&", key, params[key])
 	}
 	return str, fmt.Sprintf("%x", md5.Sum([]byte(str+"key="+secretKey)))
-}
-
-func do(l *sync.Mutex) {
-=======
-)
-
-func main() {
-	fmt.Println(Ipv4ToUint32("192.168.132.169"))
->>>>>>> 0612b95ab5ad04df994b1033f74bcbe9cbb7a8ed
-}
-// ipv4地址转成uint32数字
-func Ipv4ToUint32(ipv4 string) uint32 {
-	return 0
 }

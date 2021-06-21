@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"testing"
+)
 
 /*
 206. 反转链表
@@ -76,7 +79,7 @@ func demo(head *ListNode) (*ListNode, *ListNode) {
 	return start, end
 }
 
-func main() {
+func TestSolution_206(t *testing.T) {
 
 	node := generateLinkList()
 	newNode := reverseList2(node)

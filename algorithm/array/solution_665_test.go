@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"sort"
+	"testing"
 )
 
 /*
@@ -73,9 +75,6 @@ func checkPossibility2(nums []int) bool {
 	}
 	return true
 }
-
-/*func main() {
-
+func TestSolution_665(t *testing.T) {
 	fmt.Println(checkPossibility2([]int{2, 3, 3, 2, 2}))
-
-}*/
+}

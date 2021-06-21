@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strings"
+	"testing"
 )
 
 /*
@@ -54,7 +55,7 @@ func lengthOfLastWord2(s string) int {
 	return 0
 }
 
-func main() {
+func TestSolution_58(t *testing.T) {
 	fmt.Println(lengthOfLastWord1("a"))
 
 }

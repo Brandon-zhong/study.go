@@ -35,7 +35,7 @@ func downloadNovel(url, fileDir string) {
 	document, _ := goquery.NewDocumentFromReader(reader)
 	title := document.Find("div#info h1").Text()
 
-	pool := util.NewSeqConcurrentProc(8, func(val interface{}) interface{} {
+	pool := util.NewSeqConcurrentProc(16, func(val interface{}) interface{} {
 		v := val.(value)
 		content := getContent(v.url)
 		v.content = &content
@@ -121,9 +121,5 @@ func getContent(url string) string {
 }
 
 func main() {
-
-	//getContent()
-	downloadNovel("https://www.777zw.la/22/22055/", "E:\\nfs\\download")
-	//mergeFile("E:\\nfs\\download\\tmp", "E:\\nfs\\download\\修真聊天群.txt")
-
+	downloadNovel("https://www.777zw.la/0/230/", "E:\\nfs\\download")
 }

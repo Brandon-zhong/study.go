@@ -36,6 +36,7 @@ func NewSeqConcurrentProc(size int, fn Proc) *SeqConcurrentProc {
 			defer func() {
 				if err := recover(); err != nil {
 					fmt.Println("something has error -->", err)
+					//runtime.Caller(0)
 				}
 				fmt.Println("goroutine exit!")
 			}()

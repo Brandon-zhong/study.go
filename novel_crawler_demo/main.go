@@ -82,7 +82,7 @@ func getList2(url string) {
 	title := document.Find("div#info h1").Text()
 
 	type info struct {
-		url string
+		url  string
 		path string
 	}
 	proc := util.NewConcurrentProc(8, func(i interface{}) {
@@ -102,7 +102,63 @@ func getList2(url string) {
 	log.Printf("\nall download has finished, spend time --> %s.", util.ResolveTime(time.Now().Unix()-start))
 }
 
+type value struct {
+	url     string
+	title   string
+	content *string
+}
 
+func getList3(url string) {
+	start := time.Now().Unix()
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer resp.Body.Close()
+	reader := simplifiedchinese.GBK.NewDecoder().Reader(resp.Body)
+	document, _ := goquery.NewDocumentFromReader(reader)
+	title := document.Find("div#info h1").Text()
+
+	pool := util.NewSeqConcurrentProc(8, func(val interface{}) interface{} {
+		v := val.(value)
+		content := getContent(v.url)
+		v.content = &content
+		return v
+	})
+
+	in, out := pool.Process()
+	go writeFileFromChan(out, "E:\\nfs\\download\\"+title+".txt")
+
+	document.Find("div#list dl dd a").Each(func(i int, selection *goquery.Selection) {
+		val, _ := selection.Attr("href")
+		text := selection.Text()
+		fmt.Println("start downloading", text, val)
+		in <- value{
+			url:   url + val,
+			title: text,
+		}
+	})
+	pool.CancelFn()
+	log.Printf("\nall download has finished, spend time --> %s.", util.ResolveTime(time.Now().Unix()-start))
+}
+
+func writeFileFromChan(ch <-chan interface{}, fileName string) {
+
+	file, err := os.Create(fileName)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	for val := range ch {
+		content := val.(value).content
+		if content == nil {
+			continue
+		}
+		_, _ = file.WriteString(*content + "\n\n\n")
+	}
+	_ = file.Close()
+}
 
 func mergeFile(tmpDir, targetFilePath string) {
 	dir, err := os.Open(tmpDir)
@@ -198,13 +254,13 @@ func getContent(url string) string {
 	for _, n := range find.Nodes {
 		f(n)
 	}
-	return buf.String()
+	return util.BytesToString(buf.Bytes())
 }
 
 func main() {
 
 	//getContent()
-	getList2("https://www.37zw.la/22/22055/")
+	getList3("https://www.777zw.la/22/22055/")
 	//mergeFile("E:\\nfs\\download\\tmp", "E:\\nfs\\download\\修真聊天群.txt")
 
 }
